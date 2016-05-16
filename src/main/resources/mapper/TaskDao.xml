@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.waes.dao.TaskDao">
+    <!-- 目的：为DAO接口方法提供sql语句配置 -->
+    
+    <update id="reduceNum">
+        <!-- 具体sql -->
+        update
+          task
+        set
+          task_num = task_num - 1
+        where task_id = #{taskId}
+        and start_time <![CDATA[<=]]> #{checkTime}
+        and end_time >= #{checkTime}
+        and task_num > 0
+    </update>
+
+    <select id="queryById" resultType="Task" parameterType="long">
+        select task_id,task_name,task_num,start_time,end_time,create_time
+        from task
+        where task_id = #{taskId}
+    </select>
+
+    <select id="queryAll" resultType="Task">
+        select task_id,task_name,task_num,start_time,end_time,create_time
+        from task
+        order by create_time desc
+        limit #{offset},#{limit}
+    </select>
+</mapper>
